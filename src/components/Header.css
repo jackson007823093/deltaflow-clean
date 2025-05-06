@@ -1,0 +1,28 @@
+.header {
+    background-color: #00205B; /* Delta Blue */
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .header__logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+  }
+  
+  .header__nav a {
+    margin-left: 1.5rem;
+    color: white;
+    font-weight: 500;
+    transition: opacity 0.2s ease;
+  }
+  
+  .header__nav a:hover {
+    text-decoration: underline;
+    opacity: 0.85;
+  }
+  

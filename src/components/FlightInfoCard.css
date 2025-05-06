@@ -1,0 +1,19 @@
+.flight-card {
+    border: 1px solid #ccc;
+    padding: 1.5rem;
+    border-radius: 12px;
+    margin: 1rem 0;
+    background-color: #F9FAFB;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  }
+  
+  .flight-card h2 {
+    color: #00205B; /* Delta Blue */
+    margin-bottom: 0.5rem;
+  }
+  
+  .flight-card p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+  }
+  
