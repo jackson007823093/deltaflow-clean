@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import CompensationChecker from '@/components/CompensationChecker';
 import FlightInfoCard from '@/components/FlightInfoCard';
-import NearbyServicesMap from '@/components/NearbyServicesMap';
 import ChatbotPanel from '@/components/ChatbotPanel';
 
 export default function Home() {
@@ -19,10 +18,7 @@ export default function Home() {
       {/* Flight Info Display */}
       {flightData && <FlightInfoCard flightData={flightData} />}
 
-      {/* Nearby Services Map */}
-      <div style={{ marginTop: '2rem' }}>
-        <NearbyServicesMap />
-      </div>
+  
 
       {/* Chatbot Assistant */}
       <div style={{ marginTop: '2rem' }}>
