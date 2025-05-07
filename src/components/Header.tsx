@@ -1,30 +1,25 @@
 'use client';
 
-import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Header() {
   return (
-    <header style={{
-      display: 'flex',
-      alignItems: 'center',
-      padding: '1rem 2rem',
-      backgroundColor: '#003366',
-      color: 'white',
+    <header style={{ 
+      padding: '1rem', 
+      backgroundColor: '#003366', 
+      color: 'white', 
+      display: 'flex', 
+      justifyContent: 'space-between', 
+      alignItems: 'center' 
     }}>
-      <Image
-        src="/images/delta-logo.png.png"
-        alt="Delta Air Lines Logo"
-        width={150}
-        height={50}
-        priority
-      />
-      <h1 style={{
-        marginLeft: '1rem',
-        fontSize: '1.5rem',
-        fontWeight: 'bold'
-      }}>
-        DeltaFlow+
-      </h1>
+      <h2>DeltaFlow+</h2>
+
+      <nav style={{ display: 'flex', gap: '1rem' }}>
+        <Link href="/" style={{ color: 'white', textDecoration: 'none' }}>Home</Link>
+        <Link href="/compensation" style={{ color: 'white', textDecoration: 'none' }}>Compensation</Link>
+        <Link href="/services" style={{ color: 'white', textDecoration: 'none' }}>Services</Link>
+        <Link href="/chatbot" style={{ color: 'white', textDecoration: 'none' }}>Chatbot</Link>
+      </nav>
     </header>
   );
 }

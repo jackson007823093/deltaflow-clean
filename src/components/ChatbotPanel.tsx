@@ -1,92 +1,74 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 export default function ChatbotPanel() {
-  const [messages, setMessages] = useState<string[]>([]);
+  const [messages, setMessages] = useState<{ user: string; bot: string }[]>([]);
   const [input, setInput] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleSend = () => {
-    if (input.trim()) {
-      setMessages([...messages, input]);
-      setInput('');
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+
+    const userMessage = input;
+    setMessages(prev => [...prev, { user: userMessage, bot: '...' }]);
+    setInput('');
+    setLoading(true);
+
+    try {
+      const res = await fetch('/api/chatbot', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: userMessage }),
+      });
+
+      const data = await res.json();
+      const botMessage = data.reply || 'Sorry, no response.';
+
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1].bot = botMessage;
+        return updated;
+      });
+    } catch (err) {
+      console.error('Chatbot error:', err);
+      setMessages(prev => {
+        const updated = [...prev];
+        updated[updated.length - 1].bot = 'An error occurred.';
+        return updated;
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{
-      border: '1px solid #cce0ff',
-      borderRadius: '12px',
-      padding: '1.5rem',
-      marginTop: '2rem',
-      backgroundColor: '#f2f6fc',
-      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
-      maxWidth: '600px',
-      marginLeft: 'auto',
-      marginRight: 'auto'
-    }}>
-      <h3 style={{
-        fontSize: '1.5rem',
-        marginBottom: '1rem',
-        color: '#003366',
-        fontWeight: 'bold'
-      }}>
-        Delta Assistant Chat
-      </h3>
+    <div style={{ marginTop: '2rem', border: '1px solid #ccc', padding: '1rem', borderRadius: '8px' }}>
+      <h3>Chat with DeltaFlow+</h3>
 
-      <div style={{
-        background: '#ffffff',
-        borderRadius: '8px',
-        padding: '1rem',
-        height: '200px',
-        overflowY: 'auto',
-        border: '1px solid #ddd',
-        marginBottom: '1rem'
-      }}>
-        {messages.length === 0 ? (
-          <p style={{ color: '#999' }}>Ask about delays, rebooking, or nearby services.</p>
-        ) : (
-          messages.map((msg, index) => (
-            <div key={index} style={{
-              marginBottom: '0.5rem',
-              padding: '0.5rem',
-              backgroundColor: '#e6f0ff',
-              borderRadius: '6px'
-            }}>
-              <strong>You:</strong> {msg}
-            </div>
-          ))
-        )}
+      <div style={{ maxHeight: '200px', overflowY: 'auto', marginBottom: '1rem' }}>
+        {messages.map((msg, idx) => (
+          <div key={idx}>
+            <strong>You:</strong> {msg.user}
+            <br />
+            <strong>Bot:</strong> {msg.bot}
+            <hr />
+          </div>
+        ))}
+        {loading && <p><em>Bot is thinking...</em></p>}
       </div>
 
-      <div style={{ display: 'flex' }}>
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          placeholder="Type your message…"
-          style={{
-            flexGrow: 1,
-            padding: '0.5rem 1rem',
-            borderRadius: '6px',
-            border: '1px solid #ccc'
-          }}
-        />
-        <button
-          onClick={handleSend}
-          style={{
-            marginLeft: '0.5rem',
-            padding: '0.5rem 1rem',
-            backgroundColor: '#003366',
-            color: 'white',
-            border: 'none',
-            borderRadius: '6px',
-            cursor: 'pointer'
-          }}
-        >
-          Send
-        </button>
-      </div>
+      <input
+        type="text"
+        value={input}
+        onChange={e => setInput(e.target.value)}
+        onKeyDown={e => e.key === 'Enter' && sendMessage()}
+        placeholder="Ask something..."
+        style={{ width: '80%', padding: '0.5rem' }}
+      />
+      <button onClick={sendMessage} disabled={loading} style={{ padding: '0.5rem', marginLeft: '0.5rem' }}>
+        Send
+      </button>
     </div>
   );
 }
