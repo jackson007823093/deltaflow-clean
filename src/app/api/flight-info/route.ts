@@ -1,21 +1,16 @@
-import { NextRequest } from 'next/server';
+// src/app/api/flight/route.ts
+import { NextResponse } from 'next/server';
 
-export async function GET(req: NextRequest) {
-  const { searchParams } = new URL(req.url);
-  const flightNumber = searchParams.get('flightNumber');
-  const apiKey = '3c0087b81aa7df9367a23b872f1a35d2';
-
-  if (!flightNumber) {
-    return new Response(JSON.stringify({ error: 'Missing flight number' }), { status: 400 });
-  }
-
-  const url = `http://api.aviationstack.com/v1/flights?access_key=${apiKey}&flight_iata=${flightNumber}`;
-
+export async function POST(req: Request) {
   try {
-    const res = await fetch(url);
+    const { flightNumber } = await req.json();
+
+    const res = await fetch(`http://api.aviationstack.com/v1/flights?access_key=3c0087b81aa7df9367a23b872f1a35d2&flight_iata=${flightNumber}`);
     const data = await res.json();
-    return new Response(JSON.stringify(data), { status: 200 });
-  } catch (error) {
-    return new Response(JSON.stringify({ error: 'Failed to fetch flight data' }), { status: 500 });
+
+    return NextResponse.json(data);
+  } catch (err) {
+    console.error('Flight API error:', err);
+    return new NextResponse(JSON.stringify({ error: 'Failed to fetch flight data' }), { status: 500 });
   }
 }
