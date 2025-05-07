@@ -1,37 +1,33 @@
 'use client';
 
-import Header from '@/components/Header';
-import ChatbotPanel from '@/components/ChatbotPanel';
+import React, { useState } from 'react';
+import CompensationChecker from '@/components/CompensationChecker';
 import FlightInfoCard from '@/components/FlightInfoCard';
 import NearbyServicesMap from '@/components/NearbyServicesMap';
-import CompensationChecker from '@/components/CompensationChecker';
+import ChatbotPanel from '@/components/ChatbotPanel';
 
 export default function Home() {
+  const [flightData, setFlightData] = useState<any>(null);
+
   return (
-    <>
-      <Header />
-      <main style={{ padding: '2rem' }}>
-        <h1>Welcome to DeltaFlow+</h1>
+    <main style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
+      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>DeltaFlow+</h1>
 
-        {/* Static flight info card (optional demo info) */}
-        <FlightInfoCard
-          flightNumber="DL405"
-          status="Delayed"
-          departure="JFK - 3:30 PM"
-          arrival="LAX - 6:45 PM"
-          gate="B12"
-          delayReason="Weather"
-        />
+      {/* Flight Search Input */}
+      <CompensationChecker onFlightData={(data) => setFlightData(data)} />
 
-        {/* Live nearby services map with filters */}
+      {/* Flight Info Display */}
+      {flightData && <FlightInfoCard flightData={flightData} />}
+
+      {/* Nearby Services Map */}
+      <div style={{ marginTop: '2rem' }}>
         <NearbyServicesMap />
+      </div>
 
-        {/* Flight compensation checker */}
-        <CompensationChecker />
-
-        {/* Chatbot assistant */}
+      {/* Chatbot Assistant */}
+      <div style={{ marginTop: '2rem' }}>
         <ChatbotPanel />
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

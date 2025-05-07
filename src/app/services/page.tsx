@@ -3,8 +3,9 @@
 import dynamic from 'next/dynamic';
 import Header from '@/components/Header';
 
+// Dynamically load the map (client-only)
 const NearbyServicesMap = dynamic(() => import('@/components/NearbyServicesMap'), {
-  ssr: false, // Disable SSR for this component
+  ssr: false,
 });
 
 export default function ServicesPage() {
