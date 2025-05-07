@@ -1,11 +1,10 @@
 'use client';
 
-import Header from '@/components/Header';
 import dynamic from 'next/dynamic';
+import Header from '@/components/Header';
 
-// ⛔ Prevent SSR on NearbyServicesMap to fix the window error
 const NearbyServicesMap = dynamic(() => import('@/components/NearbyServicesMap'), {
-  ssr: false,
+  ssr: false, // Disable SSR for this component
 });
 
 export default function ServicesPage() {

@@ -25,9 +25,11 @@ const NearbyServicesMap = () => {
   });
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((pos) => {
-      setPosition([pos.coords.latitude, pos.coords.longitude]);
-    });
+    if (typeof window !== 'undefined' && navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((pos) => {
+        setPosition([pos.coords.latitude, pos.coords.longitude]);
+      });
+    }
   }, []);
 
   useEffect(() => {
